@@ -1,6 +1,6 @@
 # pubsub-sample
 
-This is just a simple demo of publishing messags to a pubsub topic and then running a subscriber to pull the data. There are 2 ways to subscribe - async and sync. Both methods are 
+This is just a simple demo of publishing messags to a pubsub topic and then running a subscriber to pull the data. There are 2 ways to subscribe: `async` and `sync`. Both methods are included in the subscriber.py. Just comment/uncomment the appropriate lines.
 
 ## Pre-requisites
 Create a topic `ticker` and subscriber `ticker-sub`
