@@ -29,6 +29,11 @@ pip install --upgrade google-cloud-pubsub
 
 ## Running it all
 ```
+source venv/bin/activate
 python publisher.py
-python subscriber.py
+python subscriber.py ticker-sub
+python subscriber.py ticker-sub-2
+python subscriber.py ticker-sub-ordered
+deactivate
+
 ```

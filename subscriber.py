@@ -1,21 +1,24 @@
+import sys
 import time
 from concurrent.futures import TimeoutError
 from google.cloud import pubsub_v1
 
 # Create a topic called "ticker"
 PROJECT_ID = 'pub-sub-experimentation'
-SUB_ID = 'ticker-sub'
+
+# Specify how long to wait before stopping subscribe
+TIMEOUT = 5
 
 
 def pull_async(subscriber, subscription_path):  
   def callback(msg):
-    print("Received message:", msg.data)
+    print("Received message:", subscription_path, msg)
     msg.ack()
 
   future = subscriber.subscribe(subscription_path, callback)
   
   try:
-    future.result(timeout=5)
+    future.result(timeout=TIMEOUT)
   except TimeoutError:
     print ('I''m tired of waiting')
     future.cancel()
@@ -33,7 +36,7 @@ def pull_sync(subscriber, subscription_path):
   response = pull(subscriber, subscription_path)  
   while len(response.received_messages) > 0:
     for msg in response.received_messages:
-      print("Received message:", msg.message.data)
+      print("Received message:", subscription_path, msg.message)
 
     ack_ids = [msg.ack_id for msg in response.received_messages]
     subscriber.acknowledge(
@@ -47,10 +50,18 @@ def pull_sync(subscriber, subscription_path):
     time.sleep(0.1)
 
 def main():
-  with pubsub_v1.SubscriberClient() as subscriber:  
-    subscription_path = subscriber.subscription_path(PROJECT_ID, SUB_ID)  
 
+  args = sys.argv[1:]
+
+  with pubsub_v1.SubscriberClient() as subscriber: 
+
+    if (len(args) < 1):
+      print ("Please supply a subscription name")
+      return
+
+    subscription_path = subscriber.subscription_path(PROJECT_ID, args[0])
     pull_async(subscriber, subscription_path)
+
     #pull_sync(subscriber, subscription_path)
 
 main()
