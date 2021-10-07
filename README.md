@@ -35,5 +35,4 @@ python subscriber.py ticker-sub
 python subscriber.py ticker-sub-2
 python subscriber.py ticker-sub-ordered
 deactivate
-
 ```

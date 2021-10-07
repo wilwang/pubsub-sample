@@ -5,7 +5,7 @@ from google.cloud import pubsub_v1
 # Create a topic called "ticker"
 PROJECT_ID = 'pub-sub-experimentation'
 TOPIC_ID = 'ticker'
-
+ 
 def main():
   publisher_options = pubsub_v1.types.PublisherOptions(enable_message_ordering=True)
   publisher = pubsub_v1.PublisherClient(publisher_options=publisher_options)
